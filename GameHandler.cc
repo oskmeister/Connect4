@@ -8,7 +8,6 @@
 #include "Player.hh"
 #include "HumanPlayer.hh"
 #include "AlphaBetaPlayer.hh"
-#include "MiniMaxPlayer.hh"
 
 void GameHandler::play() {
     Player* p[2];
