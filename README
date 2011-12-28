@@ -1,8 +1,7 @@
 Connect-4
 Written by Oskar Werkelin Ahlin.
 
-A simple Connect-4 game, with an AI player implemented using a twist of alpha-beta pruning. It beat the Ubuntu built-in Connect-4 on hardest level on first attempt.
-
+A simple Connect-4 game, with an AI player implemented using a twist of alpha-beta pruning.
 =====
 
 Usage:
