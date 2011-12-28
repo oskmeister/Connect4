@@ -18,7 +18,7 @@ class AlphaBetaPlayer: public Player {
                 return ret; 
             }
             std::vector<int> possibleMoves = cur.validMoves();
-            if (playerid&&turn||!playerid&&(!turn)) { /* maximizing player */
+            if ((playerid&&turn)||(!playerid&&(!turn))) { /* maximizing player */
                 for (int i = 0; i < (int)possibleMoves.size(); ++i) {
                     Board newBoard(cur, possibleMoves[i], turn);
                     alpha = std::max(alpha, alphaBeta(newBoard, d-1, alpha, beta, turn^1));
