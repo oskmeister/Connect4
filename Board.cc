@@ -1,6 +1,7 @@
 #include "Board.hh"
 
 #include <cstdio>
+#include <cstdlib>
 
 #define COLS 7LL
 #define ROWS 6LL
@@ -8,6 +9,12 @@
 Board::Board() {
     bricks[0] = 0;
     bricks[1] = 0;
+}
+
+Board::Board(Board& b, int c, int p) {
+    bricks[0] = b.bricks[0];
+    bricks[1] = b.bricks[1];
+    makeMove(c,p);
 }
 
 std::vector<int> Board::validMoves() {
@@ -59,5 +66,17 @@ int Board::result() {
         temp = bricks[p] & (bricks[p]<<(COLS+1-1));
         if (temp & (temp<<(2*(COLS+1-1)))) return p;
     }
+    if (validMoves().size() == 0) return 2;
     return -1;
 }
+
+int Board::score() {
+    int result_check = result();
+    if (result_check != -1) {
+        if (result_check == 2) return 0;
+        if (result_check == 0) return 1<<15;
+        if (result_check == 1) return -(1<<15);
+    }
+    return 0;
+}
+

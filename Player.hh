@@ -5,6 +5,7 @@
 
 class Player {
     public:
+        int playerid;
         virtual int getMove(Board& board)=0;
 };
 
