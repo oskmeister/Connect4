@@ -1,5 +1,8 @@
+/**
+ *  Board.cc
+ *  Author: Oskar Werkelin Ahlin
+ */
 #include "Board.hh"
-
 #include <cstdio>
 #include <cstdlib>
 

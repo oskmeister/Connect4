@@ -1,3 +1,11 @@
+/**
+ *  AlphaBetaPlayer.hh
+ *  Author: Oskar Werkelin Ahlin
+ *
+ *  An AI player using alpha-beta pruning for finding good moves. 
+ *  Instantiate the class with a board, then use getMove to retrieve
+ *  moves.
+ **/
 #ifndef ALPHABETAPLAYER_HH
 #define ALPHABETAPLAYER_HH
 
@@ -8,10 +16,20 @@
 #include <cstdio>
 #include <algorithm>
 
-#define MAXDEPTH 10
+#define MAXDEPTH 8
 
 class AlphaBetaPlayer: public Player {
     public:
+        /**
+         * The main function for alpha-beta pruning.
+         *
+         * @param cur The current board.
+         * @param d Current number of max depth steps left.
+         * @param alpha Alpha in 'alpha-beta pruning'.
+         * @param beta Beta in 'alpha-beta pruning'.
+         * @param turn The current turn.
+         * @return Best evaluation for sub tree.
+         */
         int alphaBeta(Board cur, int d, int alpha, int beta, int turn) {
             if (!d || cur.result() != -1) { 
                 int ret = cur.score()*(playerid?-1:1);
@@ -36,6 +54,16 @@ class AlphaBetaPlayer: public Player {
             return 0;
         }
 
+        /** 
+         * getMove uses alpha-beta pruning for calculating evaluation
+         * for possible moves, and makes the move which most benefits 
+         * the agent. Also prints the evaluation of the best possible move.
+         *
+         * See Player.hh
+         *
+         * @param Board The current game board.
+         * @return The decided move.
+         **/
         int getMove(Board& curboard) {
             std::vector<int> moves = curboard.validMoves();
             std::vector<int> candMoves;
