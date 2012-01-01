@@ -9,6 +9,11 @@
 #define COLS 7LL
 #define ROWS 6LL
 
+#define ROW_SHIFT 1
+#define COL_SHIFT 8
+#define DIAG_SHIFT1 7
+#define DIAG_SHIFT2 9
+
 Board::Board() {
     bricks[0] = 0;
     bricks[1] = 0;
@@ -59,6 +64,7 @@ void Board::plot() {
 
 int Board::result() {
     unsigned long long temp;
+
     for (int p = 0; p < 2; ++p) {
         temp = bricks[p] & (bricks[p]<<1);
         if (temp & (temp<<2)) return p;
@@ -78,8 +84,47 @@ int Board::score() {
     if (result_check != -1) {
         if (result_check == 2) return 0;
         if (result_check == 0) return 1<<15;
-        if (result_check == 1) return -(1<<15);
+        else return -(1<<15);
     }
-    return 0;
+
+    int ret = 0;
+    long long all = bricks[0] | bricks[1];
+    long long tmp1,tmp2,tmp3;
+
+    int shifts[3] = {ROW_SHIFT,DIAG_SHIFT1,DIAG_SHIFT2}; // ignore vertical
+    
+    for (int p = 0; p < 2; ++p) {
+        for (int ss = 0; ss < 3; ++ss) {
+            
+            // O--O
+            tmp1 = bricks[p]&(bricks[p] << 3*shifts[ss]);
+            tmp2 = ~bricks[!p];
+            tmp2 &= (tmp2<<shifts[ss]);
+            tmp2 &= (tmp2<<shifts[ss]);
+            tmp2 &= (tmp2<<shifts[ss]);
+            tmp2 &= tmp1;
+            ret += 3*(p?-1:1)*__builtin_popcountll(tmp2);
+
+            // OO
+            tmp3 = bricks[p] & (bricks[p]<<(1*shifts[ss]));
+            ret += 2*(p?-1:1)*__builtin_popcountll(tmp3);
+            
+            // OOO
+            tmp3 = bricks[p] & (bricks[p]<<(1*shifts[ss])) & (bricks[p]<<(2*shifts[ss]));
+            ret += 7*(p?-1:1)*__builtin_popcountll(tmp3);
+            
+            // O-OO / OO-O
+            tmp1 = bricks[p]&(bricks[p] << 3*shifts[ss]);
+            tmp2 = ~bricks[!p];
+            tmp2 &= (tmp2<<shifts[ss]);
+            tmp2 &= (tmp2<<shifts[ss]);
+            tmp2 &= (tmp2<<shifts[ss]);
+            tmp2 &= tmp1;
+            tmp2 &= (bricks[p]<<(2*shifts[ss])|bricks[p]<<(shifts[ss]));
+            ret += 10*(p?-1:1)*__builtin_popcountll(tmp2);
+            
+        }
+    }
+    return ret;
 }
 

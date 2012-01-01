@@ -70,7 +70,7 @@ class AlphaBetaPlayer: public Player {
             int bestScore = playerid?-(1<<25):-(1<<25);
             for (int i = (int)moves.size()-1; i+1; --i) {
                 Board newboard = Board(curboard, moves[i], playerid);
-                int curScore = alphaBeta(newboard, MAXDEPTH, -(1<<15), 1<<15, playerid^1);
+                int curScore = alphaBeta(newboard, MAXDEPTH+2*(7-moves.size()), -(1<<15), 1<<15, playerid^1);
                 if (curScore > bestScore) {
                     candMoves.clear();
                     bestScore = curScore;
@@ -78,8 +78,9 @@ class AlphaBetaPlayer: public Player {
                 } else if (curScore == bestScore) {
                     candMoves.push_back(moves[i]);
                 }
+                printf("move %d has score %d\n",moves[i],curScore);
             }
-            printf("AlphaBetaPlayer (player %d) eval: %d\n",playerid,bestScore);
+            printf("AlphaBetaPlayer at depth %d (player %d) eval: %d\n",MAXDEPTH+2*(7-(int)moves.size()),playerid,bestScore);
             return candMoves[(rand()%((int)candMoves.size()))];
         }
 };

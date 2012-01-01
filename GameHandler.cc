@@ -11,9 +11,9 @@
 
 void GameHandler::play() {
     Player* p[2];
-    p[0] = new AlphaBetaPlayer();
+    p[0] = new HumanPlayer();
     p[0]->playerid = 0;
-    p[1] = new HumanPlayer();
+    p[1] = new AlphaBetaPlayer();
     p[1]->playerid = 1;
     int turn = 0,move;
     board.plot();
